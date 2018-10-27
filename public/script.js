@@ -1,16 +1,29 @@
 const PRICE = 9.99;
+const LOADNUM = 10;
 new Vue({
     el:'#app',
     data: {
         total:0,
         items: [],
         cart:[],
+        results:[],
         newSearch: 'anime',
         lastSearch: '',
         loading: false,
         price: PRICE,
     },
+    computed: {
+      noMoreItems: function () {
+          return this.items.length===this.results.length && this.results.length > 0
+      }
+    },
     methods: {
+        appendItems: function(){
+            if(this.items.length < this.results.length){
+                let append = this.results.slice(this.items.length, this.items.length + LOADNUM);
+                this.items = this.items.concat(append);
+            }
+        },
         onSubmit: function(){
             this.items=[];
                 this.loading=true;
@@ -18,7 +31,8 @@ new Vue({
                 .get('/search/'.concat(this.newSearch))
                 .then(function(res){
                     this.lastSearch = this.newSearch;
-                   this.items= res.data;
+                    this.results =res.data;
+                   this.appendItems();
                    this.loading=false;
 
                 })
@@ -68,6 +82,12 @@ new Vue({
     },
     mounted: function(){
         this.onSubmit();
+        let vueInstance = this;
+        const elem = document.getElementById('product-list-bottom');
+        const watcher = scrollMonitor.create(elem);
+        watcher.enterViewport(function(){
+            vueInstance.appendItems();
+        })
 
     }
 });

@@ -26,7 +26,7 @@
         <div class="products">
             <div v-if="loading">Loading.....</div>
             <div class="search-results" v-else>
-                Found {{items.length}} results for search term {{lastSearch}}
+                Found {{results.length}} results for search term {{lastSearch}}
             </div>
             <div class="product" v-for="(item, index) in items">
 
@@ -43,7 +43,11 @@
                     <button class="add-to-cart btn" v-on:click="addItem(index)">Add to Cart</button>
                 </div>
             </div>
+            <div id="product-list-bottom">
+                <div v-if="noMoreItems">no more items</div>
+            </div>
         </div>
+
         <div class="cart">
             <h2>Shopping Cart</h2>
                 <transition-group name="fade" tag="ul">
@@ -72,6 +76,7 @@
 <script src="/reload/reload.js"></script>
 <script src="/node_modules/vue/dist/vue.js"></script>
 <script src="/node_modules/vue-resource/dist/vue-resource.js"></script>
+<script src="node_modules/scrollmonitor/scrollMonitor.js"></script>
 <script type="text/javascript" src="public/script.js"></script>
 
 </body>
