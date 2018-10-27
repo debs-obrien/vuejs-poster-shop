@@ -8,6 +8,7 @@ new Vue({
         newSearch: 'anime',
         lastSearch: '',
         loading: false,
+        price: PRICE,
     },
     methods: {
         onSubmit: function(){
